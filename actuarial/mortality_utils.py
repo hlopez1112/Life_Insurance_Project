@@ -31,7 +31,7 @@ def death_probabilities(mortality_values: np.ndarray, term: int)-> tuple[np.ndar
 
     survival_probabilities[0] = 1
 
-    # Calculate the survival probabilities and death probabilities for each year in the term
+    # Calculate the survival probabilities and death probabilities for each year in the termUpda
     survival_probabilities[1:] = np.cumprod(1 - mortality_term)[:-1]
     death_probabilities = survival_probabilities * mortality_term
 

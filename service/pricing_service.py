@@ -1,9 +1,12 @@
-from actuarial.mortality import MortalityCalculator
-from actuarial.premium import PremiumCalculator
+import actuarial.mortality_utils as MortalityCalculator
+import actuarial.premium_utils as PremiumCalculator
 
 
 class PricingService:
-
+    """
+    A service for calculating life insurance premiums based on mortality data and policy assumptions.
+    Returns a dictionary containing survival probabilities, death probabilities, actuarial present values, and calculated premiums.
+    """
     def __init__(self, mortality_df):
 
         self.mortality_df = mortality_df

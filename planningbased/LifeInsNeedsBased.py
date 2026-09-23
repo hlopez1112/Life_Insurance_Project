@@ -1,6 +1,9 @@
-# %%
 class NeedsBasedCalculator:
-
+    """
+    A class to calculate life insurance needs based on a needs-based approach.
+    It considers various expenses, income replacement goals, education expenses, and existing assets to determine the net insurance need for a client.
+    Returns a summary of the client's financial situation and calculated insurance needs.
+    """
     def __init__(self, age: int, annual_income: float):
         self.age = age
         self.annual_income = annual_income
