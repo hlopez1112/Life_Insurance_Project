@@ -7,7 +7,7 @@ import data.mortality_loader as MortalityLoader
 from models.assumptions import Assumptions
 from models.policy import Policy
 from planningbased.LifeInsNeedsBased import NeedsBasedCalculator
-from service.pricing_service import PricingService
+from productpricing.pricing_calculator import PricingTerm
 from visualization.charts import (
     plot_gender_premiums,
     plot_term_reserves,
@@ -67,7 +67,7 @@ def build_client(
 
 
 def build_policy_quote(
-    pricing_service: PricingService,
+    pricing_service: PricingTerm,
     assumptions: Assumptions,
     age: int,
     gender: str,
@@ -104,7 +104,7 @@ def build_policy_quote(
 
 
 def build_comparison_dataframe(
-        pricing_service: PricingService,
+        pricing_service: PricingTerm,
         assumptions: Assumptions,
         face_amount: float,
         term_duration: int,
@@ -148,7 +148,7 @@ def build_comparison_dataframe(
 
 def main():
     mortality_df = MortalityLoader.load_mortality_files(data_dir=DATA_DIR)
-    pricing_service = PricingService(mortality_df)
+    pricing_service = PricingTerm(mortality_df)
 
     assumptions = Assumptions(
         interest_rate=0.05,
