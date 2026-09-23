@@ -11,18 +11,12 @@ def get_qx(df: pd.DataFrame, age: int, risk_class: str, gender: str) -> np.ndarr
     '''
 
     # Create a boolean mask to filter the DataFrame based on the provided age, risk class, and gender
-    mask = (
-    (df["issue_age"] == age)
-    & (df["risk_class"] == risk_class)
-    & (df["gender"] == gender)
-    )
+    mortality_lookup = (df.set_index(["issue_age", "risk_class", "gender"]))
 
-    result = df.loc[mask]
-
-    if result.empty:
-        raise ValueError(f"No mortality data for age {age}")
-
-    return result.drop(columns=["issue_age", "risk_class", "gender"]).values[0]
+    try:
+        return mortality_lookup.loc[(age, risk_class, gender)]
+    except KeyError:
+        raise ValueError(f"No mortality data for age {age}, risk class {risk_class}, and gender {gender}")
 
 
 def death_probabilities(mortality_values: np.ndarray, term: int)-> tuple[np.ndarray, np.ndarray]:
