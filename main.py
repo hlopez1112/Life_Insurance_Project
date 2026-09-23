@@ -1,11 +1,9 @@
 from pathlib import Path
-from typing import Any
-
 import numpy as np
 import pandas as pd
-
-from actuarial.reserve import ReserveCalculator
-from data.mortality_loader import MortalityLoader
+from typing import Any
+import actuarial.reserve_utils as ReserveCalculator
+import data.mortality_loader as MortalityLoader
 from models.assumptions import Assumptions
 from models.policy import Policy
 from planningbased.LifeInsNeedsBased import NeedsBasedCalculator
@@ -149,7 +147,7 @@ def build_comparison_dataframe(
 
 
 def main():
-    mortality_df = MortalityLoader.load(DATA_DIR)
+    mortality_df = MortalityLoader.load_mortality_files(data_dir=DATA_DIR)
     pricing_service = PricingService(mortality_df)
 
     assumptions = Assumptions(
@@ -183,19 +181,18 @@ def main():
     )
 
 
-    reserves, premium_npv, benefit_npv = (
-        ReserveCalculator.calculate_reserve(
-            survival_probabilities=quote[
-                "survival_probabilities"
-            ],
-            death_probabilities=quote[
-                "death_probabilities"
-            ],
-            premium=quote["net_premium"],
-            benefit=policy.face_amount,
-            interest_rate=assumptions.interest_rate,
-        )
-    )
+    reserves, premium_npv, benefit_npv = ReserveCalculator.calculate_reserve(
+        survival_probabilities=quote[
+            "survival_probabilities"
+        ],
+        death_probabilities=quote[
+            "death_probabilities"
+        ],
+        premium=quote["net_premium"],
+        benefit=policy.face_amount,
+        interest_rate=assumptions.interest_rate,
+    )  
+
 
     plot_term_reserves(
         reserve_values=reserves,
