@@ -39,7 +39,9 @@ def plot_gender_premiums(df:pd.DataFrame, gender: str, face_amount: float):
 
     plt.legend(labels = ["Super Preferred", 'Preferred', 'Standard'], loc= 'upper center', bbox_to_anchor=(0.5, 1.0), ncols=3, frameon = False)
     plt.tight_layout()
-    plt.show()
+    
+
+    return plt.gcf()
 
 
 def plot_percent_difference(df:pd.DataFrame, riskclass: str, premium: str, ax):
@@ -82,7 +84,7 @@ def plot_percent_difference(df:pd.DataFrame, riskclass: str, premium: str, ax):
     
     ax.set_ylabel("Premium Difference (%)", fontfamily="serif")
     ax.set_yticks(np.arange(0, max + 10, step= scale_step))
-    ax.legend(labels = ['Male Premium Above Female (%)'], loc= 'upper center', bbox_to_anchor=(0.5,.95), ncols=1, frameon = False)
+    ax.legend(labels = ['Male & Female Premium Diff (%)'], loc= 'upper center', bbox_to_anchor=(0.5,.95), ncols=1, frameon = False)
     
     return ax
 
@@ -131,9 +133,9 @@ def plot_riskclass_premiums(df: pd.DataFrame, riskclass: str, face_amount: float
 
     
     fig.tight_layout()
-    plt.show()
+    
 
-    return 
+    return fig
 
 
 def plot_term_reserves(
@@ -246,5 +248,6 @@ def plot_term_reserves(
         ax2.spines['right'].set_visible(False)
 
         plt.subplots_adjust(hspace=.6)
+        
 
         return fig
