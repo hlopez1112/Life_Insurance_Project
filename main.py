@@ -1,15 +1,17 @@
 from pathlib import Path
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
 from typing import Any
 import actuarial.reserve_utils as ReserveCalculator
 import data.mortality_loader as MortalityLoader
-from models.assumptions import Assumptions
-from models.policy import Policy
+from policyassumptions.assumptions import Assumptions
+from policyassumptions.policy import Policy
 from planningbased.LifeInsNeedsBased import NeedsBasedCalculator
 from productpricing.pricing_calculator import PricingTerm
 from visualization.charts import (
     plot_gender_premiums,
+    plot_riskclass_premiums,
     plot_term_reserves,
 )
 
@@ -145,7 +147,15 @@ def build_comparison_dataframe(
         )
     )
 
+def save_chart(filename: str, fig=plt.gcf()):
+    fig.savefig(
+        f"images/{filename}",
+        dpi=300,
+        bbox_inches="tight",
+    )
+    return 
 
+    
 def main():
     mortality_df = MortalityLoader.load_mortality_files(data_dir=DATA_DIR)
     pricing_service = PricingTerm(mortality_df)
@@ -194,13 +204,16 @@ def main():
     )  
 
 
-    plot_term_reserves(
+    fig_res = plot_term_reserves(
         reserve_values=reserves,
         prem_npv=premium_npv,
         bene_npv=benefit_npv,
         term_duration=policy.term_duration,
     )
 
+    save_chart("term_reserve_chart.png", fig_res)
+
+    
     comparison_df = build_comparison_dataframe(
         pricing_service=pricing_service,
         assumptions=assumptions,
@@ -208,18 +221,51 @@ def main():
         term_duration=policy.term_duration,
     )
 
-    plot_gender_premiums(
+    fig_male =plot_gender_premiums(
         comparison_df,
         "male",
         face_amount,
     )
+    save_chart("male_premium_chart.png", fig_male)
 
-    plot_gender_premiums(
+
+    fig_female = plot_gender_premiums(
         comparison_df,
         "female",
         face_amount,
     )
 
+    save_chart("female_premium_chart.png", fig_female)
 
+
+    fig_std =plot_riskclass_premiums(
+        comparison_df,
+        "standard",
+        face_amount,
+        gross_prem=True,
+        percent_diff= True
+    )
+    save_chart("standard_riskclass_premium_chart.png", fig_std)
+
+    fig_pref = plot_riskclass_premiums(
+            comparison_df,
+            "preferred",
+            face_amount,
+            gross_prem=True,
+            percent_diff= True
+        )
+    save_chart("preferred_riskclass_premium_chart.png", fig_pref)
+
+    fig_sup = plot_riskclass_premiums(
+            comparison_df,
+            "superpreferred",
+            face_amount,
+            gross_prem=True,
+            percent_diff= True
+        )
+    save_chart("superpreferred_riskclass_premium_chart.png", fig_sup)
+
+
+    
 if __name__ == "__main__":
     main()
