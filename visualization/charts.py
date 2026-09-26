@@ -201,24 +201,29 @@ def plot_term_reserves(
 
         if 100000 < max_reserve:
                 scale_step = ceil((max_reserve/10)/20000)*20000
-                label_offset = 10000
 
 
         elif 50000 <= max_reserve <= 100000:
                 scale_step = ceil((max_reserve/10)/5000)*5000
-                label_offset = 5000
-
+                
                 
         elif  30000 <= max_reserve < 50000:
                 scale_step = ceil((max_reserve/10)/2000)*2000
-                label_offset = 2000
-
                 
-        elif max_reserve < 30000:
+                
+        elif 10000<= max_reserve < 30000:
+                scale_step = ceil((max_reserve/10)/1000)*1000
+
+
+        elif 3000 <= max_reserve < 10000:
                 scale_step = ceil((max_reserve/10)/500)*500
-                label_offset = 700
 
-                
+
+        elif max_reserve < 3000:
+                scale_step = ceil((max_reserve/10)/250)*250
+
+        label_offset = scale_step *.40
+
         ax2.set_yticks(
         np.arange(0, max_reserve + scale_step, scale_step)
         )
@@ -248,6 +253,6 @@ def plot_term_reserves(
         ax2.spines['right'].set_visible(False)
 
         plt.subplots_adjust(hspace=.6)
-        
+       
 
         return fig
