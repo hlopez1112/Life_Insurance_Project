@@ -45,7 +45,9 @@ Compare premiums across three common underwriting classes:
   * Preferred Non-Tobacco
   * Standard Non-Tobacco
 
+
 **Risk Class Premium Charts**
+
 Model generates visualizations illustrating pure premiums across multiple issue ages.
 
 **Key Findings**
@@ -54,7 +56,9 @@ Model generates visualizations illustrating pure premiums across multiple issue 
 * Premiums increase as issue age increases.
 * The highest premiums occur at older ages within the Standard risk class.
 
+
 **Male vs. Female Premium Analysis**
+
 Compare premium rates between genders across underwriting classes.
 
 **Key Findings**
