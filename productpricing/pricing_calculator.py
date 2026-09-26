@@ -1,3 +1,5 @@
+from typing import cast
+import numpy as np
 import actuarial.mortality_utils as MortalityCalculator
 import actuarial.premium_utils as PremiumCalculator
 
@@ -11,25 +13,25 @@ class PricingTerm:
 
         self.mortality_df = mortality_df
 
-    def quote(self, policy, assumptions):
+    def quote(self, policy, assumptions) -> dict[str, object]:
 
         mortality_rates = (MortalityCalculator.get_qx(self.mortality_df, policy.issue_age, policy.risk_class, policy.gender))
 
-        survival_probabilities, death_probabilities = (MortalityCalculator.death_probabilities(mortality_rates , policy.term_duration))
+        survival_probabilities, death_probabilities = MortalityCalculator.death_probabilities(mortality_rates, policy.term_duration)
 
-        apv_ann = (PremiumCalculator.apv_annuity_due(survival_probabilities, assumptions.interest_rate))
+        apv_ann = float(PremiumCalculator.apv_annuity_due(survival_probabilities, assumptions.interest_rate))   
 
-        apv_bene = (PremiumCalculator.apv_benefit(death_probabilities, assumptions.interest_rate))
+        apv_bene = float(PremiumCalculator.apv_benefit(death_probabilities, assumptions.interest_rate))
 
-        net_premium = (PremiumCalculator.net_premium(policy.face_amount, apv_bene, apv_ann))
+        net_premium = float(PremiumCalculator.net_premium(policy.face_amount, apv_bene, apv_ann))
 
-        gross_premium = (PremiumCalculator.gross_premium(net_premium, assumptions, apv_ann))
+        gross_premium = float(PremiumCalculator.gross_premium(net_premium, assumptions, apv_ann))
 
         return {
-        "survival_probabilities": survival_probabilities,
-        "death_probabilities": death_probabilities,
-        'apv_ann': apv_ann,
-        'apv_benefit': apv_bene,
-        "net_premium": round(net_premium,2),
-        "gross_premium": round(gross_premium,2),
+            "survival_probabilities": survival_probabilities,
+            "death_probabilities": death_probabilities,
+            'apv_ann': apv_ann,
+            'apv_benefit': apv_bene,
+            "net_premium": round(float(net_premium), 2),
+            "gross_premium": round(float(gross_premium), 2),
         }
