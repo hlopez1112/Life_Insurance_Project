@@ -1,5 +1,3 @@
-from typing import cast
-import numpy as np
 import actuarial.mortality_utils as MortalityCalculator
 import actuarial.premium_utils as PremiumCalculator
 
