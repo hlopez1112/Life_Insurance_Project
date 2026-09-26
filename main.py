@@ -8,7 +8,7 @@ import data.mortality_loader as MortalityLoader
 from policyassumptions.assumptions import Assumptions
 from policyassumptions.policy import Policy
 from planningbased.LifeInsNeedsBased import NeedsBasedCalculator
-from productpricing.pricing_calculator import PricingTerm
+from productpricing.pricing_product import PricingTerm
 from visualization.charts import (
     plot_gender_premiums,
     plot_riskclass_premiums,
